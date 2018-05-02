@@ -36,11 +36,10 @@ class DS_Database_Archive
 		$this->option_file = dirname( __FILE__ ) . '/' . self::OPTION_FILE;
 
 		if ( is_admin() ) {
-			$this->load_class( 'pluginoptions' );
 			$this->load_class( 'fieldrender' );
 			$this->load_class( 'admin' );
 
-			$this->options = new DS_Plugin_Options( NULL, $this->option_file );
+			$this->get_options();
 			DS_Database_Archive_Admin::get_instance();
 		}
 	}
@@ -79,8 +78,11 @@ $self->_log('desktop property is missing ' . var_export($ds_runtime->preferences
 		}
 
 		if ( file_exists( $self->file ) ) {
+			$this->get_options();
 			// file exists, check contents for time signature
 			$time = file_get_contents( $self->file );
+
+			// calculate the next time archive operation is to be run
 			$days = 1;
 			switch ( $self->options->get( 'archive', '1day' ) ) {
 			case 'daily':
@@ -106,6 +108,8 @@ $self->_log(__METHOD__.'():' . __LINE__ . ' time=' . $time . '/' . date( 'M-d-Y 
 $self->_log(__METHOD__.'():' . __LINE__ . ' next=' . $next . '/' . date( 'M-d-Y H:i:s', $next ) );
 			$next += ( $days * self::DAY_IN_SECONDS ) + $hour;
 $self->_log(__METHOD__.'():' . __LINE__ . ' next=' . $next . '/' . date( 'M-d-Y H:i:s', $next ) );
+
+			// if we're past the time archive is supposed to run, run it
 			if ( time() > $next )
 				$self->perform_archive();
 		} else {
@@ -121,6 +125,25 @@ $self->_log(__METHOD__.'():' . __LINE__ . ' next=' . $next . '/' . date( 'M-d-Y 
 	{
 		$time = time();
 		file_put_contents( $this->file, $time );
+	}
+
+	/**
+	 * Helper method to load the plugin options
+	 */
+	private function get_options()
+	{
+		if ( !class_exists( 'DS_Plugin_Options', FALSE ) )
+			$this->load_class('pluginoptions');
+		if ( NULL === $this->options ) {
+			$this->get_directories();
+			$defaults = array(
+				'archive' => 'daily',
+				'time' => '00',
+				'mode' => 'single',
+				'location' => $this->dirs['user_dir'] . self::ARCHIVE_DIR_NAME . DIRECTORY_SEPARATOR
+			);
+			$this->options = new DS_Plugin_Options( NULL, $this->option_file, $defaults );
+		}
 	}
 
 	/**
