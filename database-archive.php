@@ -151,7 +151,7 @@ $self->_log(__METHOD__.'():' . __LINE__ . ' next=' . $next . '/' . date( 'M-d-Y 
 			if ( empty( $this->dirs['ds_dir'] ) ) {
 				if ( DS_OS_DARWIN ) {
 					$this->dirs['ds_dir'] = '/Applications/XAMPP/';
-					$this->dirs['ds_temp'] = $this->dirs['ds_dir'] . 'xamppfiles/tmp/';
+					$this->dirs['ds_temp'] = $this->dirs['ds_dir'] . 'xamppfiles/temp/';
 					$this->dirs['mysql_dir'] = $this->dirs['ds_dir'] . 'xamppfiles/bin/';
 					$this->dirs['user_dir'] = dirname( $ds_runtime->preferences->desktop ) . DIRECTORY_SEPARATOR;
 				} else if ( DS_OS_WINDOWS ) {
