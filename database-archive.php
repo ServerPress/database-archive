@@ -231,8 +231,11 @@ $this->_log(__METHOD__.'()');
 		@mkdir( $archive_dir, 0644, TRUE);
 		if ( DS_OS_DARWIN ) {
 			// set permissions so current user can read/write directory #3
-			$user = basename( dirname( $ds_runtime->preferences->desktop ) );
+			$user = $ds_runtime->preferences->webOwner;
+			if ( empty( $user ) )
+				$user = basename( dirname( $ds_runtime->preferences->desktop ) );
 			$cmd = "chown {$user} {$archive_dir}";
+$this->_log('exec: ' . $cmd);
 			shell_exec( $cmd );
 		}
 
