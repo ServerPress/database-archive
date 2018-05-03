@@ -128,7 +128,7 @@ $self->_log(__METHOD__.'():' . __LINE__ . ' next=' . $next . '/' . date( 'M-d-Y 
 	}
 
 	/**
-	 * Helper method to load the plugin options
+	 * Helper method to load the plugin options into the private property '$options'
 	 */
 	private function get_options()
 	{
@@ -142,6 +142,7 @@ $self->_log(__METHOD__.'():' . __LINE__ . ' next=' . $next . '/' . date( 'M-d-Y 
 				'mode' => 'single',
 				'location' => $this->dirs['user_dir'] . self::ARCHIVE_DIR_NAME . DIRECTORY_SEPARATOR
 			);
+			// $option_file was initialized in __construct()
 			$this->options = new DS_Plugin_Options( NULL, $this->option_file, $defaults );
 		}
 	}
@@ -228,6 +229,12 @@ $this->_log(__METHOD__.'()');
 
 		// make sure the User's archive directory exists
 		@mkdir( $archive_dir, 0644, TRUE);
+		if ( DS_OS_DARWIN ) {
+			// set permissions so current user can read/write directory #3
+			$user = basename( dirname( $ds_runtime->preferences->desktop ) );
+			$cmd = "chown {$user} {$archive_dir}";
+			shell_exec( $cmd );
+		}
 
 		if ( file_exists( $pref ) ) {
 			copy( $pref, $archive_dir . 'com.serverpress.desktopserver' . $seq . '.json');
