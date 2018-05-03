@@ -78,7 +78,7 @@ $self->_log('desktop property is missing ' . var_export($ds_runtime->preferences
 		}
 
 		if ( file_exists( $self->file ) ) {
-			$this->get_options();
+			$self->get_options();
 			// file exists, check contents for time signature
 			$time = file_get_contents( $self->file );
 
