@@ -228,7 +228,7 @@ $this->_log(__METHOD__.'()');
 		}
 
 		// make sure the User's archive directory exists
-		@mkdir( $archive_dir, 0644, TRUE);
+		@mkdir( $archive_dir, 0755, TRUE);
 		if ( DS_OS_DARWIN ) {
 			// set permissions so current user can read/write directory #3
 			$user = $ds_runtime->preferences->webOwner;
