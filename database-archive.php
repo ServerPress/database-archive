@@ -208,13 +208,6 @@ $this->_log(__METHOD__.'()');
 
 		global $ds_runtime;
 
-		// copy DesktopServer's preferences file
-		if ( DS_OS_DARWIN ) {
-			$pref = '/Users/Shared/com.serverpress.desktopserver.json';
-		} else if ( DS_OS_WINDOWS ) {
-			$pref = 'C:\\Documents and Settings\\All Users\\DesktopServer\\com.serverpress.desktopserver.json';
-		}
-
 		// use default archive directory, or the user-specified directory if supplied
 		$archive_dir = $this->dirs['archive_dir'];
 		$settings_dir = $this->options->get( 'location' );
@@ -228,7 +221,7 @@ $this->_log(__METHOD__.'()');
 		}
 
 		// make sure the User's archive directory exists
-		@mkdir( $archive_dir, 0644, TRUE);
+		@mkdir( $archive_dir, 0755, TRUE);
 		if ( DS_OS_DARWIN ) {
 			// set permissions so current user can read/write directory #3
 			$user = $ds_runtime->preferences->webOwner;
@@ -237,6 +230,13 @@ $this->_log(__METHOD__.'()');
 			$cmd = "chown {$user} {$archive_dir}";
 $this->_log('exec: ' . $cmd);
 			shell_exec( $cmd );
+		}
+
+		// copy DesktopServer's preferences file
+		if ( DS_OS_DARWIN ) {
+			$pref = '/Users/Shared/.com.serverpress.desktopserver.json';
+		} else if ( DS_OS_WINDOWS ) {
+			$pref = 'C:\\Documents and Settings\\All Users\\DesktopServer\\com.serverpress.desktopserver.json';
 		}
 
 		if ( file_exists( $pref ) ) {
