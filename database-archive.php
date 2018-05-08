@@ -248,7 +248,7 @@ $this->_log(__METHOD__.'()');
 			$user = $ds_runtime->preferences->webOwner;
 			if ( empty( $user ) )
 				$user = basename( dirname( $ds_runtime->preferences->desktop ) );
-			$cmd = "chown {$user} {$archive_dir}";
+			$cmd = "chown +R {$user} {$archive_dir}";
 $this->_log('exec: ' . $cmd);
 			shell_exec( $cmd );
 		}
