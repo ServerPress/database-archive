@@ -338,7 +338,7 @@ console.log('--posted');
 
 			case 'location':
 				$value = rtrim( $value, '/\\' ) . DIRECTORY_SEPARATOR;
-				@mkdir( $value, 0664, TRUE );
+				DS_Database_Archive::get_instance()->make_dir( $value );
 				if ( is_writable( $value ) )
 					$valid = TRUE;
 				else

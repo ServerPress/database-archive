@@ -242,16 +242,7 @@ $this->_log(__METHOD__.'()');
 		}
 
 		// make sure the User's archive directory exists
-		@mkdir( $archive_dir, 0755, TRUE);
-		if ( DS_OS_DARWIN ) {
-			// set permissions so current user can read/write directory #3
-			$user = $ds_runtime->preferences->webOwner;
-			if ( empty( $user ) )
-				$user = basename( dirname( $ds_runtime->preferences->desktop ) );
-			$cmd = "chown +R {$user} {$archive_dir}";
-$this->_log('exec: ' . $cmd);
-			shell_exec( $cmd );
-		}
+		$this->make_dir( $archive_dir );
 
 		// copy DesktopServer's preferences file
 		if ( DS_OS_DARWIN ) {
@@ -290,6 +281,25 @@ $this->_log(__METHOD__.'() writing to ' . $cred_file);
 		$end = microtime( TRUE );
 
 $this->_log(__METHOD__.'() archive complete ' . ($end - $start) . ' microseconds');
+	}
+
+	/**
+	 * Utility method to create a read/writeable directory for storing archives
+	 * @param string $archive_dir The full path to the directory to be created
+	 */
+	public function make_dir( $archive_dir )
+	{
+		@mkdir( $archive_dir, 0755, TRUE );
+		if ( DS_OS_DARWIN ) {
+			// set permissions so current user can read/write directory #3
+			global $ds_runtime;
+			$user = $ds_runtime->preferences->webOwner;
+			if ( empty( $user ) )
+				$user = basename( dirname( $ds_runtime->preferences->desktop ) );
+			$cmd = "chown {$user} {$archive_dir}";
+$this->_log('exec: ' . $cmd);
+			shell_exec( $cmd );
+		}
 	}
 
 	/**
