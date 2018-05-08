@@ -186,12 +186,88 @@ class DS_Database_Archive_Admin
 			)
 		);
 
+		add_settings_field(
+			'archive-now',									// field id
+			__( 'Archive Now', 'database-archive' ),		// label
+			array( $this, 'render_archive_now' ),			// callback
+			self::SETTINGS_PAGE,
+			$section_id
+		);
+
 		// handle display of "Settings Saved" notice
 		$key = self::SETTINGS_UPDATED_NOTICE . get_current_user_id();
 		if ( FALSE !== $this->msg = get_transient( $key ) ) {
 			delete_transient( $key );
 			add_action( 'admin_notices', array( $this, 'show_notice' ) );
 		}
+	}
+
+	public function render_archive_now( $field )
+	{
+		echo '<div id="ds-archive-now-button">';
+		echo '<button id="ds-archive-now" type="button" class="button-primary" onclick="ds_archive_now(); return false;">',
+			__( 'Run Archive Now', 'database-archive' ),
+			'</button>';
+		echo '</div>';
+		$admin_ajax = esc_url( admin_url( 'admin-ajax.php' ) );
+?>
+<script type="text/javascript">
+function ds_archive_now( e )
+{
+	jQuery( '#ds-archive-now-button' ).hide();
+	jQuery( '#ds-archive-now-working' ).show();
+console.log('posting now');
+	jQuery.post( {
+		url: '<?php echo $admin_ajax; ?>',
+		data: {
+			action: 'archivenow'
+		},
+		success: function( result ) {
+console.log('success() callback');
+			jQuery( '#ds-archive-now-working' ).hide();
+			jQuery( '#ds-archive-now-completed' ).show();
+		},
+		failure: function( result ) {
+console.log('failure() callback');
+			jQuery( '#ds-archive-now-working' ).hide();
+			jQuery( '#ds-archive-now-error' ).show();
+		}
+	} );
+console.log('--posted');
+}
+</script>
+<?php
+
+		echo '<div id="ds-archive-now-working" style="display:none">';
+		echo '<span class="dashicons dashicons-admin-generic spin"></span>';
+		echo __( 'Working...', 'database-archive' );
+		echo '</div>';
+?>
+<style>.dashicons.spin {
+   animation: dashicons-spin 4s infinite;
+   animation-timing-function: linear;
+}
+
+@keyframes dashicons-spin {
+   0% {
+      transform: rotate( 0deg );
+   }
+   100% {
+      transform: rotate( 360deg );
+   }
+}
+</style>
+<?php
+
+		echo '<div id="ds-archive-now-completed" style="display:none">';
+		echo '<span class="dashicons dashicons-yes"></span>';
+		echo __( 'Completed.', 'database-archive' );
+		echo '</div>';
+
+		echo '<div id="ds-archive-now-error" style="display:none">';
+		echo '<span class="dashicons dashicons-no"></span>';
+		echo __( 'Error.', 'database-archive' );
+		echo '</div>';
 	}
 
 	/**

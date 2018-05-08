@@ -42,6 +42,11 @@ class DS_Database_Archive
 			$this->get_options();
 			DS_Database_Archive_Admin::get_instance();
 		}
+
+$this->_log( __METHOD__.'(): setting up ajax callback');
+if (defined('DOING_AJAX') && DOING_AJAX)
+	$this->_log(__METHOD__.'(): doing ajax ' . $_SERVER['REQUEST_URI'] . ' ' . var_export($_POST, TRUE));
+		add_action( 'wp_ajax_archivenow', array( $this, 'archive_now' ) );
 	}
 
 	/**
@@ -195,6 +200,22 @@ $this->_log('ERROR: Operating System not detected');
 		}
 
 		return $this->dirs;
+	}
+
+	/**
+	 * Callback for AJAX operations
+	 */
+	public function archive_now()
+	{
+$this->_log(__METHOD__.'(): running archive');
+		$this->perform_archive();
+
+		$res = array(
+			'success' => 1
+		);
+		header( 'Content-Type: application/json' );
+		echo json_encode($res);
+		die();
 	}
 
 	/**
