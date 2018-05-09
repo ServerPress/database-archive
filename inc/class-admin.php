@@ -52,6 +52,9 @@ class DS_Database_Archive_Admin
 		return $this->_admin_page;
 	}
 
+	/**
+	 * Displays contextual help for the Database Archive settings page
+	 */
 	public function contextual_help()
 	{
 		$screen = get_current_screen();
@@ -61,26 +64,49 @@ class DS_Database_Archive_Admin
 		$screen->set_help_sidebar(
 			'<p><string>' . __('For more information:', 'database-archive' ) . '</strong></p>' .
 			'<p>' . sprintf( '<a href="%2$s" target="_blank">%1$s</a>%3$s<a href="%5$s" target="_blank">%4$s</a>.',
-				__( 'See our documentation here: ', 'database-archive'),
+				__( 'See our documentation here', 'database-archive'),
 				'https://serverpress.com/database-archive/',
 				__( ', or visit our ', 'database-archive'),
 				__( 'GitHub Repository', 'database-archive' ),
 				'https://github.com/ServerPress/database-archive') . '</p>'
 		);
 
+		$archive_file = parse_url( get_site_url(), PHP_URL_HOST ) . date( '_Ymd' );
 		$screen->add_help_tab( array(
 			'id'		=> 'ds-database-archive',
 			'title'		=> __( 'DS Database Archive', 'database-archive' ),
 			'content'	=>
 				'<p><b>' . __( 'Perform Database Archive:', 'database-archive') . '</b> - ' .
-					__( 'Archives of all DesktopServer sites will be made at the requested interval. One of "Daily", "Every two days", "Every three days", "Weekly" or "Never". If selecting "Never", it would be better to disable the DS Database Archive plugin from the Design Time Plugins loaded by DesktopServer.', 'database-archive' ) . '</b> - '.
+					__( 'Archives of all DesktopServer sites will be made at the requested
+						interval. One of "Daily", "Every two days", "Every three days",
+						"Weekly" or "Never". If selecting "Never", it would be better to
+						disable the DS Database Archive plugin from the Design Time Plugins
+						loaded by DesktopServer.', 'database-archive' ) . '</b> - '.
 				'</p>' .
 				'<p><b>' . __( 'Time to Perform Backup', 'database-archive' ) . '</b> - ' .
-					__( 'Sets the time of day that the Archive will be performed. Choice are: "12am" (Midnight), "4am", "8am", "12pm" (Noon), "4pm", and "8pm".', 'database-archive' ) . '</p>' .
+					__( 'Sets the time of day that the Archive will be performed. Choice are:
+						"12am" (Midnight), "4am", "8am", "12pm" (Noon), "4pm", and "8pm".', 'database-archive' ) . '</p>' .
 				'<p><b>' . __( 'Archive Mode', 'database-archive' ) . '</b> - '.
-					__( 'The Archive Mode describes how backup files will be created. Choice are "A single .sql file for each site" where a single .sql file will be used and overwritten with each archive performed. Or "A .sql file with date stamp for each site" where each archive will create a new .sql file with the date as part of the file name.', 'database-archive' ) . '</p>' .
+					__( "The Archive Mode describes how backup files will be created. Choice are
+						\"A single .sql file for each site\" where a single .sql file will be used
+						and overwritten with each archive performed. Or \"A .sql file with date
+						stamp for each site\" where each archive will create a new .sql file with
+						the date as part of the file name. Example: <b>{$archive_file}.sql</b>.", 'database-archive' ) . '</p>' .
 				'<p><b>' . __( 'Location', 'database-archive' ) . '</b> - ' .
-					__( 'The Location describes where the archive files will be placed on your computer. This will default to your a "DesktopServer_Archive/" directory under your User Directory.', 'database-archive' ) . '</p>'
+					__( 'The Location describes where the archive files will be placed on your
+						computer. This will default to your a "DesktopServer_Archive/" directory
+						under your User Directory.', 'database-archive' ) . '</p>' .
+				'<p><b class="button-primary">' . __( 'Run Archive Now', 'database-archive' ) . '</b> - ' .
+					__( 'This buttons allows you to run an Archive operation at any time, rather
+						than waiting until the scheduled time. Using this feature with the "Single"
+						Archive Mode will overwrite the current backup file. Using this with date
+						stamped files will overwrite any existing .sql file of the same date. Once
+						the archive operation is complete, the scheduled archives will continue from
+						the current date onward. So if you have selected archives to be created every
+						three days and the next scheduled time is tomorrow, Run Archive Now will create
+						the archive files and reset the schedule to run in three days from today.', 'database-archive' ) . '</p>' .
+				'<p><b>' . __( 'Important Note:', 'database-archive' ) . '</b> ' .
+					__( 'Database Archives will not be created unless DesktopServer is running.', 'database-archive' ) . '</p>'
 		));
 
 		do_action( 'database-archive-options_contextual_help', $screen );
