@@ -72,6 +72,8 @@ class DS_Database_Archive_Admin
 		);
 
 		$archive_file = parse_url( get_site_url(), PHP_URL_HOST ) . date( '_Ymd' );
+		$dirs = DS_Database_Archive::get_instance()->get_directories();
+		$archive_dir = $dirs['archive_dir'];
 		$screen->add_help_tab( array(
 			'id'		=> 'ds-database-archive',
 			'title'		=> __( 'DS Database Archive', 'database-archive' ),
@@ -81,7 +83,7 @@ class DS_Database_Archive_Admin
 						interval. One of "Daily", "Every two days", "Every three days",
 						"Weekly" or "Never". If selecting "Never", it would be better to
 						disable the DS Database Archive plugin from the Design Time Plugins
-						loaded by DesktopServer.', 'database-archive' ) . '</b> - '.
+						loaded by DesktopServer.', 'database-archive' ) .
 				'</p>' .
 				'<p><b>' . __( 'Time to Perform Backup', 'database-archive' ) . '</b> - ' .
 					__( 'Sets the time of day that the Archive will be performed. Choice are:
@@ -107,6 +109,35 @@ class DS_Database_Archive_Admin
 						the archive files and reset the schedule to run in three days from today.', 'database-archive' ) . '</p>' .
 				'<p><b>' . __( 'Important Note:', 'database-archive' ) . '</b> ' .
 					__( 'Database Archives will not be created unless DesktopServer is running.', 'database-archive' ) . '</p>'
+		));
+		$screen->add_help_tab( array(
+			'id'		=> 'ds-database-restore',
+			'title'		=> __( 'Restoring Archives', 'database-archive' ),
+			'content'	=>
+				'<p><b>' . __( 'Restore Database Archive:', 'database-archive') . '</b> - ' .
+					__( 'To restore an archive created by the DS Database Archives plugin, you can
+						use one of the following two methods:', 'database-archive' ) . '</b>'.
+				'</p>' .
+				'<b>' . __( 'phpMyAdmin:', 'database-archive' ) . '</b>' .
+					'<ol>' .
+					'<li>' . __( 'Click on the orange "Database" button from the Development Websites page at
+						<a href="http://localhost" target="blank">localhost</a>.', 'database-archive' ) . '</li>' .
+					'<li>' . __( 'Click on the "Import" tab at the top of the page', 'database-archive' ) . '</li> ' .
+					'<li>' . sprintf( __( 'Use the "Choose File" button and select the archive file to import from your
+						archive directory located at %s.', 'database-archive' ), $archive_dir ) . '</li>' .
+					'</ol>' .
+				'<b>' . __( 'Command Line Interface (CLI):', 'database-archive' ) . '</b>' .
+					'<ol>' .
+					'<li>' . __( 'If you do not already have a command/terminal window open, click on the
+						"DS-CLI" button on the Admin page of your local web site.', 'database-archive' ) . '</li>' .
+					'<li>' . __( 'Change into the directory where your database archives are stored:', 'database-archive' ) . '<br/>' .
+						'<span style="font-family: monospace">cd ' . $archive_dir . '</span></li>' .
+					'<li>' . __( 'Enter command to import archive into MySQL:', 'database-archive' ) . '<br/>' .
+						'<span style="font-family: monospace">mysql -u root ' . DB_NAME . ' &lt;' . $archive_file . '.sql' . '<br/>' .
+						sprintf( __( 'Note: you can substitute the database name (%1$s) and file name (%2$s) with other names as needed.', 'database-archive' ),
+							DB_NAME,
+							$archive_file ) . '</li>' .
+					'</ol>'
 		));
 
 		do_action( 'database-archive-options_contextual_help', $screen );
