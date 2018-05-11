@@ -51,7 +51,7 @@ if (defined('DOING_AJAX') && DOING_AJAX)
 
 	/**
 	 * Obtains a singleton instance of the plugin
-	 * @return DS_DatabaseCollationFix instance
+	 * @return DS_Database_Archive instance
 	 */
 	public static function get_instance()
 	{
@@ -73,7 +73,7 @@ dbarchive_debug('runtime: ' . var_export($ds_runtime, TRUE));
 		$self->get_directories();
 
 dbarchive_debug('ds dir=' . $self->dirs['ds_dir']);
-		
+
 		$self->file = $self->dirs['ds_temp'] . self::DATA_FILE;
 dbarchive_debug('file=' . $self->file);
 
