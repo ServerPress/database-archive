@@ -65,7 +65,7 @@ class DS_Database_Archive_Admin
 			'<p><string>' . __('For more information:', 'database-archive' ) . '</strong></p>' .
 			'<p>' . sprintf( '<a href="%2$s" target="_blank">%1$s</a>%3$s<a href="%5$s" target="_blank">%4$s</a>.',
 				__( 'See our documentation here', 'database-archive'),
-				'https://serverpress.com/database-archive/',
+				'https://docs.serverpress.com/category/245-database-archive',
 				__( ', or visit our ', 'database-archive'),
 				__( 'GitHub Repository', 'database-archive' ),
 				'https://github.com/ServerPress/database-archive') . '</p>'
