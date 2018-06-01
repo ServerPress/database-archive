@@ -137,7 +137,15 @@ class DS_Database_Archive_Admin
 						sprintf( __( 'Note: you can substitute the database name (%1$s) and file name (%2$s) with other names as needed.', 'database-archive' ),
 							DB_NAME,
 							$archive_file ) . '</li>' .
-					'</ol>'
+					'</ol>' .
+				'<p><b>' . __( 'Restore DesktopServer Preferences File:', 'database-archive') . '</b> - ' .
+					__( 'Restoring the DestkopServer Preferences File is not something that needs to be
+						done often. Restoring this file can also lead to loss or possibly corruption of
+						the sites built with DesktopServer, so this should be done with extreme caution.
+						For complete instructions on restoring or recovering the preferences file, please
+						read our Knowledge Base article here. ', 'database-archive' ) .
+					'<a href="https://docs.serverpress.com/article/244-using-database-archive" target="_blank">https://docs.serverpress.com/article/244-using-database-archive</a>' .
+				'</p>'
 		));
 
 		do_action( 'database-archive-options_contextual_help', $screen );
