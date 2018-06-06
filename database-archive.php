@@ -231,6 +231,7 @@ $this->_log(__METHOD__.'()');
 
 		// use default archive directory, or the user-specified directory if supplied
 		$archive_dir = $this->dirs['archive_dir'];
+		$this->get_options();
 		$settings_dir = $this->options->get( 'location' );
 		if ( !empty( $settings_dir ) )
 			$archive_dir = $settings_dir;
