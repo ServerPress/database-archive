@@ -267,7 +267,7 @@ $this->_log('runtime: ' . var_export($ds_runtime, TRUE));
 $this->_log('sites: ' . var_export($ds_runtime->preferences->sites, TRUE));
 		// iterate through all the sites found in config file
 		foreach ( $ds_runtime->preferences->sites as $site => $info ) {
-			$run = $cmd . ' ' . $info->dbName . ' >' . $archive_dir . $info->siteName . $seq . '.sql';
+			$run = $cmd . ' ' . $info->dbName . ' >"' . $archive_dir . $info->siteName . $seq . '.sql"';
 $this->_log(__METHOD__.'(): ' . $run);
 			$res = shell_exec( $run );
 $this->_log(__METHOD__.'()>' . $res);
