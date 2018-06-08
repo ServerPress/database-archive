@@ -104,16 +104,16 @@ if ( !class_exists( 'DS_Plugin_Options', FALSE )) {
 		 */
 		public function save()
 		{
-DS_Database_Archive::_log(__METHOD__.'()');
+#DS_Database_Archive::_log(__METHOD__.'()');
 			if ( $this->_dirty ) {
-DS_Database_Archive::_log(__METHOD__.'() data is dirty');
+#DS_Database_Archive::_log(__METHOD__.'() data is dirty');
 				if ( NULL !== $this->option_name ) {
 					set_option( $this->option_name, $this->_options );
 				} else if ( NULL !== $this->filename ) {
 					// save to filesystem
-DS_Database_Archive::_log(__METHOD__.'() saving to file ' . $this->filename);
+#DS_Database_Archive::_log(__METHOD__.'() saving to file ' . $this->filename);
 					$output = json_encode( $this->_options, JSON_PRETTY_PRINT );
-DS_Database_Archive::_log(__METHOD__.'() contents: ' . $output);
+#DS_Database_Archive::_log(__METHOD__.'() contents: ' . $output);
 					file_put_contents( $this->filename, $output );
 				}
 				$this->_dirty = FALSE;

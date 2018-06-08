@@ -414,7 +414,7 @@ console.log('--posted');
 			if ( $valid )
 				$options->set( $key, $value );
 		}
-DS_Database_Archive::_log(__METHOD__.'() options: ' . var_export($options, TRUE));
+DS_Database_Archive::get_instance()->_log(__METHOD__.'() options: ' . var_export($options, TRUE));
 		$options->save();
 
 		// block the settings from being written to the database
