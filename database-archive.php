@@ -10,6 +10,19 @@ Text Domain: database-archive
 Domain path: /language
 */
 
+//Detect if in the ds-plugins folder
+$where_am_i = __DIR__;
+
+if ( strpos($where_am_i,"ds-plugins") === FALSE ) {
+	if ( PHP_OS !== 'Darwin' ){
+		// Windows
+		die("<h3>This plugin needs to be installed in to Desktop Server's ds-plugins folder.</h3><br><h5>Please install in  C:\\xampplite\\ds-plugins\\</h5>");
+	} else {
+		//Mac
+		die("<h3>This plugin needs to be installed in to Desktop Server's ds-plugins folder.</h3><br><h5>Please install in \\Applications\\XAMPP\\ds-plugins\\</h5>");
+	}
+}
+
 class DS_Database_Archive
 {
 	private static $_instance = NULL;
