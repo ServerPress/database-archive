@@ -10,19 +10,6 @@ Text Domain: database-archive
 Domain path: /language
 */
 
-//Detect if in the ds-plugins folder
-$where_am_i = __DIR__;
-
-if ( strpos($where_am_i,"ds-plugins") === FALSE ) {
-	if ( PHP_OS !== 'Darwin' ){
-		// Windows
-		die("<h3>This plugin needs to be installed in to Desktop Server's ds-plugins folder.</h3><br><h5>Please install in  C:\\xampplite\\ds-plugins\\</h5>");
-	} else {
-		//Mac
-		die("<h3>This plugin needs to be installed in to Desktop Server's ds-plugins folder.</h3><br><h5>Please install in \\Applications\\XAMPP\\ds-plugins\\</h5>");
-	}
-}
-
 class DS_Database_Archive
 {
 	private static $_instance = NULL;
@@ -44,7 +31,13 @@ class DS_Database_Archive
 	 */
 	private function __construct()
 	{
-//dbarchive_debug('inside ' . __METHOD__ . '()');
+		if ( FALSE === stripos( __DIR__, 'ds-plugins' ) ) {
+			// detect if not in the ds-plugins folder
+			if ( is_admin() )
+				add_action( 'admin_notices', array( $this, 'install_message' ) );
+			return;		// do not initialize the rest of the plugin
+		}
+
 		add_action( 'plugins_loaded', array( __CLASS__, 'check_perform_archive' ));
 		$this->option_file = dirname( __FILE__ ) . '/' . self::OPTION_FILE;
 
@@ -335,6 +328,24 @@ $this->_log(__METHOD__.'() starting');
 		} else {
 			throw new Exception( sprintf( __( 'Unable to load class file %1$s.', 'database-archive'), $file ) );
 		}
+	}
+
+	/**
+	 * Display admin notification to install plugin in correct directory
+	 */
+	public function install_message()
+	{
+		if ( 'Darwin' === PHP_OS )
+			$correct_dir = '/Applications/XAMPP/ds-plugins/';		// mac directory
+		else
+			$correct_dir = 'C:\\xampplite\\ds-plugins\\';			// Windows directory
+
+		echo '<div class="notice notice-error">',
+			'<p>',
+			sprintf( __('The Database Archive plugin needs to be installed in Desktop Server\'s ds-plugins directory.<br/>Please install in %1$sdatabase-archive', 'database-archive' ),
+				$correct_dir),
+			'</p>',
+			'</div>';
 	}
 
 	/**
