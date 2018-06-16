@@ -342,7 +342,7 @@ $this->_log(__METHOD__.'() starting');
 
 		echo '<div class="notice notice-error">',
 			'<p>',
-			sprintf( __('The Database Archive plugin needs to be installed in Desktop Server\'s ds-plugins directory.<br/>Please install in %1$sdatabase-archive', 'database-archive' ),
+			sprintf( __('<b>Notice:</b> The Database Archive plugin needs to be installed in Desktop Server\'s ds-plugins directory.<br/>Please install in %1$sdatabase-archive', 'database-archive' ),
 				$correct_dir),
 			'</p>',
 			'</div>';
