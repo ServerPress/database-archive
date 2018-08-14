@@ -268,6 +268,7 @@ $this->_log('Cannot find preferences file: ' . $pref);
 		$cmd = $this->dirs['mysql_dir'] . 'mysqldump -u ' . $ds_runtime->preferences->dbUser . ' ';
 		if ( ! empty( $ds_runtime->preferences->dbPass ) )
 			$cmd .= ' -p' . $ds_runtime->preferences->dbPass . ' ';
+		$cmd .= ' --routines ';
 
 $this->_log('runtime: ' . var_export($ds_runtime, TRUE));
 $this->_log('sites: ' . var_export($ds_runtime->preferences->sites, TRUE));
