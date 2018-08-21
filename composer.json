@@ -1,0 +1,15 @@
+{
+    "name": "serverpress/database-archive",
+    "description": "Archive all databases for DesktopServer sites on a daily basis.",
+    "type": "wordpress-plugin",
+    "license": "GPL",
+    "authors":[
+        {
+            "name": "Dave Jesch",
+            "homepage": "https://github.com/serverpress"
+        }
+    ],
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
