@@ -13,7 +13,8 @@ global $ds_runtime;
 
 function dbarchive_debug($msg)
 {
+return;
 	if (function_exists('trace'))
 		trace('dbarchive: ' . $msg);
-	
+
 }
