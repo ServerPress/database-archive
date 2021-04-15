@@ -1,7 +1,7 @@
 <?php
 /**
 Plugin Name: Database Archive
-Plugin URL: https://serverpress.com/plugins/database-flush
+Plugin URI: https://serverpress.com/plugins/database-flush
 Description: Archive all databases for DesktopServer sites on a daily basis.
 Version: 1.0.1
 Author: Dave Jesch
